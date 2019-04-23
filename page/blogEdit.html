@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Title</title>
+	<style>
+		#btn1{
+			margin: 10px 0;
+			padding: 10px 30px;
+			background-color: #449fdb;
+			width: 100px;
+			text-align: center;
+			color: white;
+			border-radius: 5px;
+		}
+	</style>
+</head>
+<body>
+<div class="container">
+	<h1>文章编辑</h1>
+	<label for="title">标题</label>
+	<input type="text" id="title" name="title" placeholder="请输入标题">
+	<label for="tag">标签</label>
+	<input type="text" id="tag" name="tag" placeholder="请输入标签，用逗号隔开">
+	<div id="editor">
+	</div>
+	<div id="btn1">提交</div>
+</div>
+<script src="js/ajax.js"></script>
+<script src="wangEditor-master/release/wangEditor.min.js"></script>
+<script>
+    const E = window.wangEditor
+   const editor = new E('#editor')
+    editor.create()
+    btn1.onclick = function () {
+        const content = editor.txt.html()
+	    if (title.value === '' || tag.value === '' || content === ''){
+	        alert('请填写标题、标签及内容')
+	    }else {
+            ajax({
+                type: 'POST',
+                url: `/editBlog?title=${title.value}&tag=${tag.value}`,
+                data: content,
+                success: function (res) {
+                    const data = JSON.parse(res)
+                    alert(data.msg)
+                    editor.txt.clear()
+                    title.value=''
+                    tag.value=''
+                }
+            })
+        }
+	    }
+	  
+</script>
+</body>
+</html>

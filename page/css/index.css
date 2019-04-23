@@ -1,0 +1,131 @@
+.everyDay {
+    background-color: #fff;
+    text-align: left;
+    border-radius: 5px;
+    box-shadow: 3px 4px 3px #aaa;
+    padding: 10px 15px;
+}
+.everyDay::before {
+    font-family: MyIcon;
+    content: '\e122';
+    font-size: 12px;
+    color: slateblue;
+    position: relative;
+    display: block;
+    height: 0px;
+    left: 54px;
+}
+.everyDay > span {
+    display: block;
+    font-size: 12px;
+    margin-bottom: 5px;
+    color: slateblue;
+}
+.everyDay > p {
+    display: inline-block;
+    line-height: 20px;
+}
+.author {
+   float: right;
+}
+.articleList {
+    width: 100%;
+    margin-top: 15px;
+}
+.article {
+    background-color: #fff;
+    display: inline-block;
+    width: 100%;
+    border-radius: 5px;
+    box-shadow: 1px 2px 2px #888;
+    overflow: hidden;
+    text-align: left;
+    margin-top: 15px;
+}
+.articleTitle {
+    display: inline-block;
+    font-size: 20px;
+    color: #131026;
+    padding: 20px 10px 5px 10px;
+}
+.articleTitle:hover {
+    color: #337ab7;
+}
+.articleContent {
+    font-size: 14px;
+    color: #131026;
+    padding: 0px 10px 20px 10px;
+    text-align: left;
+    word-break: break-all;
+    word-wrap: break-word;
+    overflow: hidden;
+}
+.articleFooter {
+    color: #eee;
+    background-color: #1f1f1f;
+    width: 100%;
+    font-size: 14px;
+    padding: 5px 15px;
+}
+/*.contentRight {*/
+    /*float: right;*/
+    /*width: 34%;*/
+    /*padding: 0px 0px 0px 0px;*/
+/*}*/
+/*.rightModule {*/
+    /*display: inline-block;*/
+    /*width: 100%;*/
+    /*background-color: #1f1f1f;*/
+    /*color: white;*/
+    /*border-radius: 10px;*/
+    /*text-align: left;*/
+    /*padding: 0px 15px 25px 15px;*/
+    /*margin-bottom: 20px;*/
+/*}*/
+/*.rightModule div {*/
+    /*display: block;*/
+    /*text-align: left;*/
+    /*font-size: 14px;*/
+    /*padding: 15px 5px 15px 0px;*/
+    /*color: dodgerblue;*/
+/*}*/
+/*.rightModule > a {*/
+    /*font-size: 14px;*/
+    /*color: dodgerblue;*/
+    /*margin-right: 5px;*/
+/*}*/
+/*.rightModule > ul > li {*/
+    /*padding: 8px 0px;*/
+    /*color: white;*/
+    /*border-bottom: 1px solid #292929;*/
+/*}*/
+/*.rightModule > ul > li > a{*/
+    /*color: white;*/
+    /*font-size: 14px;*/
+/*}*/
+/*.rightModule > ul > li > div{*/
+    /*padding: 5px 0px;*/
+/*}*/
+/*.rightModule > ul > li > div > span {*/
+    /*font-size: 14px;*/
+    /*color: white;*/
+/*}*/
+/*.rightModule > ul > li > p {*/
+    /*font-size: 14px;*/
+    /*color: #777;*/
+/*}*/
+/*.rightModule .pullRight {*/
+    /*position: absolute;*/
+    /*right: 15px;*/
+/*}*/
+/*.rightModule > span{*/
+    /*display: inline-block;*/
+    /*width: 49%;*/
+    /*height: 30px;*/
+    /*margin-top: 10px;*/
+    /*line-height: 30px;*/
+/*}*/
+/*.rightModule > span > a {*/
+    /*color: #fff;*/
+    /*font-size: 14px;*/
+/*}*/

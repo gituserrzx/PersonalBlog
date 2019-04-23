@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Title</title>
+	<style>
+		#btn{
+			margin: 10px 0;
+			padding: 10px 30px;
+			background-color: #449fdb;
+			width: 100px;
+			text-align: center;
+			color: white;
+			border-radius: 5px;
+		}
+	</style>
+</head>
+<body>
+<div class="container">
+	<h1>每日一句编辑</h1>
+	<div id="editor">
+	</div>
+	<div id="btn">提交</div>
+</div>
+<script src="js/ajax.js"></script>
+<script src="wangEditor-master/release/wangEditor.min.js"></script>
+<script>
+    var E = window.wangEditor
+    var editor = new E('#editor')
+    editor.create()
+	btn.onclick = function () {
+        const content = `${editor.txt.html()}`
+		if (content === ''){
+		   alert('请填写内容')
+		} else {
+            ajax({
+                url: '/editEveryDay',
+                type: 'POST',
+                data: content,
+                success: function (res) {
+                    const data = JSON.parse(res)
+                    alert(data.msg)
+                    editor.txt.clear()
+                },
+                error: function (res) {
+                    console.log('提交失败')
+                }
+            })
+        }
+		}
+</script>
+</body>
+</html>
