@@ -53,7 +53,7 @@ const articleList = new Vue ({
                   }
               }
               if (tag !== ''){
-                  axios.get('/queryCountByTag').then ((res) => {
+                  axios.get('/queryCountByTag?tag=' + tag).then ((res) => {
                       this.pageCount = res.data.data[0].count
                   })
                     axios.get('/queryBlogByTag?tag=' + tag + '&page='+(page-1) + '&pageSize='+pageSize).then((resp) => {
