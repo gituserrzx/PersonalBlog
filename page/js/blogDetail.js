@@ -80,7 +80,6 @@ const sendComment = new Vue ({
                         }
                     }
                 }
-
                 axios({
                     method: 'get',
                     url: `/addComment?bId=${bId}&parent=${reply}&username=${username}&email=${email}&comment=${comment}&parentName=${replyName}`

@@ -39,7 +39,19 @@ function queryCountByBlogId(blog_id,success) {
     })
     connection.end()
 }
+function queryNewComment(size, success) {
+    const querySql = 'select * from comments order by id desc  limit ?'
+    const params = [size]
+    const connection = dbUtil.connect()
+    connection.query(querySql, params, function (err, result) {
+        if (err) {
+            console.log(err)
+        } else {
+          success(result)
+        }
+    })
+}
 module.exports.insertComment = insertComment
 module.exports.queryCommentByBlogId = queryCommentByBlogId
 module.exports.queryCountByBlogId = queryCountByBlogId
-
+module.exports.queryNewComment = queryNewComment

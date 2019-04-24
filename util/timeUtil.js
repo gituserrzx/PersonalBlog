@@ -1,5 +1,5 @@
 function getNew () {
-    return parseInt(Date.now() / 1000)
+    return parseInt(Date.now())
 }
 
 module.exports.getNew = getNew

@@ -63,7 +63,7 @@
 	<div class="contentRight">
 		<div class="rightModule" id="randomTags">
 			<div>随机标签云</div>
-			<a href="/" v-for="item in tags" :style="{color:randomColor(), fontSize:randomSize()}" v-text="item">asd</a>
+			<a :href="item.href" v-for="item in tags" :style="{color:randomColor(), fontSize:randomSize()}" v-text="item.tag">asd</a>
 		</div>
 		<div class="rightModule" id="newHot">
 			<div>最近热门</div>
@@ -76,10 +76,10 @@
 			<ul>
 				<li v-for="item in comments">
 					<div>
-						<span v-text="item.name"></span>
-						<span class="pullRight" v-text="item.date"></span>
+						<span v-text="item.user_name"></span>
+						<span class="pullRight" v-text="item.ctime"></span>
 					</div>
-					<p v-text="item.comment">抱歉,由于种种原因</p>
+					<p v-text="item.comment"></p>
 				</li>
 			</ul>
 		</div>

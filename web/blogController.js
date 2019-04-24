@@ -6,6 +6,58 @@ const timeUtil = require('../util/timeUtil')
 const respUtil = require('../util/respUtil')
 
 const path = new Map()
+function queryBlogCountByTag(req, res) {
+    const params = url.parse(req.url, true).query
+    tagBlogMapping.queryBlogCountByTag(parseInt(params.tag), function (result) {
+        res.writeHead(200)
+        res.write(respUtil.writeResult('success', '成功', result))
+        res.end()
+    })
+}
+function queryBlogByTag(req, res) {
+    const params = url.parse(req.url, true).query
+    tagBlogMapping.queryBlogIdByTag(parseInt(params.tag),parseInt(params.page),parseInt(params.pageSize), function (result) {
+        if (result && result.length !== 0) {
+            const lastResult = []
+            for (let i = 0;i < result.length;i++) {
+                blogDao.queryBlogById(result[i].blog_id, function(result) {
+                    lastResult.push(result[0])
+                })
+            }
+            getResult(result, lastResult, res)
+
+        } else {
+            res.writeHead(200)
+            res.write(respUtil.writeResult('success', '成功', result))
+            res.end()
+        }
+    })
+}
+function getResult (result, lastResult, response) {
+    if (result.length !== lastResult.length) {
+        setTimeout(() => {
+          getResult(result, lastResult, response)
+        }, 0)
+    } else {
+        response.writeHead(200)
+        response.write(respUtil.writeResult('success', '成功', lastResult))
+        response.end()
+    }
+}
+function queryAllBlog(req, res) {
+    blogDao.queryAllBlog(function (result) {
+        res.writeHead(200)
+        res.write(respUtil.writeResult('success', '成功', result))
+        res.end()
+    })
+}
+function queryHotBlog (req, res) {
+    blogDao.queryHotBlog(5,function (result) {
+        res.writeHead(200)
+        res.write(respUtil.writeResult('success', '成功', result))
+        res.end()
+    })
+}
 function queryBlogCount (req, res) {
     blogDao.queryBlogCount(function (result) {
         res.writeHead(200)
@@ -34,6 +86,7 @@ function queryBlogById (req, res) {
         res.write(respUtil.writeResult('success','查询成功', result))
         res.end()
     })
+    blogDao.addViews(parseInt(params.bId), function (result) {})
 }
 
 function editBlog (req, res) {
@@ -54,7 +107,6 @@ function editBlog (req, res) {
             }
         })
     })
-
 }
 
 function queryTag (tag, blogId) {
@@ -76,8 +128,13 @@ function insertTagBlogMapping (tagId, blogId) {
 
     })
 }
+path.set('/queryAllBlog', queryAllBlog)
+path.set('/queryHotBlog', queryHotBlog)
+path.set('/queryAllBlog', queryAllBlog)
 path.set('/queryBlogById', queryBlogById)
 path.set('/editBlog', editBlog)
 path.set('/queryBlogByPage', queryBlogByPage)
 path.set('/queryBlogCount', queryBlogCount)
+path.set('/queryBlogByTag',queryBlogByTag)
+path.set('/queryCountByTag', queryBlogCountByTag)
 module.exports.path = path

@@ -163,9 +163,11 @@ body {
     color: dodgerblue;
 }
 .rightModule > a {
-    font-size: 14px;
     color: dodgerblue;
     margin-right: 5px;
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow: hidden;
 }
 .rightModule > ul > li {
     padding: 8px 0px;

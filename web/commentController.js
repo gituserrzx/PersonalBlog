@@ -37,6 +37,14 @@ function queryCountByBlogId (req, res) {
         res.end()
     })
 }
+function queryNewComment(req, res) {
+    commentDao.queryNewComment(5, function (result) {
+        res.writeHead(200)
+        res.write(respUtil.writeResult('success','成功', result))
+        res.end()
+    })
+}
+path.set('/queryNewComment', queryNewComment)
 path.set('/queryCountByBlogId',queryCountByBlogId)
 path.set('/queryCommentByBlogId',queryCommentByBlogId)
 path.set('/queryRandomCode', queryRandomCode)

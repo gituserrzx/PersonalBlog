@@ -26,26 +26,7 @@ const articleList = new Vue ({
         pageSize: 5,
         pageCount: 0,
         pageNumList: [],
-        articleList: [
-            {
-                title: 'PC端微信(2.6.6.28)防撤回',
-                content: '此方法仅限于官网下载的PC版微信2.6.6.28版本。工具：winhex19、pc版微信打开winhex19， 文件->打开，定位并找到微信安装目录中的WeChatWin.dll，打开。点击左侧offset列，使偏移量转为16进制格式显示。点击工具栏中的“转到偏移量”。输入 0024A58E ，确定。自动定位到一个数值：75，其中5以反色（蓝色）光标显示，输入4，使其变为74。保存文件...',
-                date: '2019-4-16',
-                views: '101',
-                tags: 'test1 test2',
-                id: '1',
-                link: ''
-            },
-            {
-                title: 'PC端微信(2.6.6.28)防撤回',
-                content: '此方法仅限于官网下载的PC版微信2.6.6.28版本。工具：winhex19、pc版微信打开winhex19， 文件->打开，定位并找到微信安装目录中的WeChatWin.dll，打开。点击左侧offset列，使偏移量转为16进制格式显示。点击工具栏中的“转到偏移量”。输入 0024A58E ，确定。自动定位到一个数值：75，其中5以反色（蓝色）光标显示，输入4，使其变为74。保存文件...',
-                date: '2019-4-16',
-                views: '101',
-                tags: 'test1 test2',
-                id: '2',
-                link: ''
-            }
-        ]
+        articleList: []
     },
     computed: {
         getCount() {
@@ -58,26 +39,64 @@ const articleList = new Vue ({
         },
         getPage() {
           return function (page, pageSize) {
-              axios.get('/queryBlogByPage?page='+(page-1) + '&pageSize='+pageSize)
-                  .then(function (resp) {
-                     const result = resp.data.data
-                      const list = []
-                      for (let i = 0; i < result.length; i++) {
-                          const temp = {}
-                          temp.title = result[i].title
-                          temp.date = result[i].ctime
-                          temp.content = result[i].content
-                          temp.tags = result[i].tags
-                          temp.id = result[i].id
-                          temp.link = '/blogDetail.html?bId=' + result[i].id
-                          temp.views = result[i].views
-                          list.push(temp)
+              let tag = ''
+              const searchParams = location.search.indexOf('?') > -1 ? location.search.split('?')[1].split('&') : ''
+              if (searchParams) {
+                  for (let i = 0; i < searchParams.length; i++) {
+                      if (searchParams[i].split('=')[0] === 'tag') {
+                          try {
+                              tag = searchParams[i].split('=')[1]
+                          } catch(e) {
+                              console.log(e)
+                          }
                       }
-                      articleList.page = page
-                      articleList.articleList = list
-                  }).catch(function (resp) {
+                  }
+              }
+              if (tag !== ''){
+                  axios.get('/queryCountByTag').then ((res) => {
+                      this.pageCount = res.data.data[0].count
+                  })
+                    axios.get('/queryBlogByTag?tag=' + tag + '&page='+(page-1) + '&pageSize='+pageSize).then((resp) => {
+                        const result = resp.data.data
+                        const list = []
+                        for (let i = 0; i < result.length; i++) {
+                            const temp = {}
+                            temp.title = result[i].title
+                            temp.date = timeFromat(result[i].ctime)
+                            temp.content = result[i].content
+                            temp.tags = result[i].tags
+                            temp.id = result[i].id
+                            temp.link = '/blogDetail.html?bId=' + result[i].id
+                            temp.views = result[i].views
+                            list.push(temp)
+                        }
+                        articleList.page = page
+                        articleList.articleList = list
+
+                    })
+              } else {
+                  this.getCount()
+                  axios.get('/queryBlogByPage?page='+(page-1) + '&pageSize='+pageSize)
+                      .then(function (resp) {
+                          const result = resp.data.data
+                          const list = []
+                          for (let i = 0; i < result.length; i++) {
+                              const temp = {}
+                              temp.title = result[i].title
+                              temp.date = timeFromat(result[i].ctime)
+                              temp.content = result[i].content
+                              temp.tags = result[i].tags
+                              temp.id = result[i].id
+                              temp.link = '/blogDetail.html?bId=' + result[i].id
+                              temp.views = result[i].views
+                              list.push(temp)
+                          }
+                          articleList.page = page
+                          articleList.articleList = list
+                      }).catch(function (resp) {
                       console.log('请求错误')
-              })
+                  })
+              }
               this.generatePageTool
           }
         },
@@ -107,7 +126,6 @@ const articleList = new Vue ({
     },
     created () {
         this.getPage(this.page, this.pageSize)
-        this.getCount()
     },
     methods: {
         jumpTo (page) {

@@ -1,9 +1,7 @@
 const randomTags = new Vue({
     el: '#randomTags',
     data: {
-        tags: [
-           'asg', 'bbb','aaa','dddd0','eeee','fff','ggg','666'
-        ]
+        tags: []
     },
     computed: {
         randomColor() {
@@ -19,68 +17,86 @@ const randomTags = new Vue({
                 const size = (Math.random() * 20 + 12) + 'px'
                 return size
             }
+        },
+        getRandomTags() {
+            return function () {
+                axios({
+                    method: 'get',
+                    url: '/queryRandomTags'
+                }).then((res) => {
+                    res.data.data.forEach((item) => {
+                        item.href = '?tag=' + item.id
+                    })
+                    this.tags = res.data.data
+                }).catch(() => {
+                    console.log('查询出错')
+                })
+            }
         }
     },
     created () {
-
+        this.getRandomTags()
     }
 })
 const newHot = new Vue({
     el: '#newHot',
     data: {
-        titleList: [
-            {
-                title: '这是一个链接',
-                link: 'http://baidu.com'
-            },
-            {
-                title: '这是一个链接',
-                link: 'http://baidu.com'
-            },
-            {
-                title: '这是一个链接',
-                link: 'http://baidu.com'
-            },
-            {
-                title: '这是一个链接',
-                link: 'http://baidu.com'
-            },
-            {
-                title: '这是一个链接',
-                link: 'http://baidu.com'
-            },
-            {
-                title: '这是一个链接',
-                link: 'http://baidu.com'
-            },
-        ]
+        titleList: []
+    },
+    computed: {
+        getHot() {
+            return function () {
+            axios({
+                method: 'get',
+                url: '/queryHotBlog'
+            }).then((res) => {
+                res.data.data.forEach((item) => {
+                    item.href = '/blogDetail.html?bId=' + item.id
+                    item.ctime = timeFromat(item.ctime)
+                })
+                this.titleList = res.data.data
+            }).catch(() => {
+                console.log('查询失败')
+            })
+            }
+        }
+},
+    created() {
+        this.getHot()
     }
 })
 const newComments = new Vue({
     el: '#newComments',
     data: {
-        comments: [
-            {
-                name: '这里是用户',
-                date: '2019-4-16',
-                comment: '这是一串内容'
-            },
-            {
-                name: '这里是用户',
-                date: '2019-4-16',
-                comment: '这是一串内容'
-            },
-            {
-                name: '这里是用户',
-                date: '2019-4-16',
-                comment: '这是一串内容'
-            },
-            {
-                name: '这里是用户',
-                date: '2019-4-16',
-                comment: '这是一串内容'
+        comments: []
+    },
+    computed: {
+        getNewComment() {
+            return () => {
+                axios({
+                    method: 'get',
+                    url: '/queryNewComment'
+                }).then ((res) => {
+                    res.data.data.forEach((item) => {
+                        item.ctime = timeFromat(item.ctime)
+                    })
+                    this.comments = res.data.data
+                }).catch(() => {
+                    console.log('查询失败')
+                })
             }
-        ]
+        }
+    },
+    created() {
+        this.getNewComment()
     }
 })
+
+function timeFromat (date) {
+    const time = new Date(date)
+    const y = time.getFullYear()
+    const m = time.getMonth() + 1
+    const d = time.getDate()
+    return y + '-' + m + '-' + d
+}
 
